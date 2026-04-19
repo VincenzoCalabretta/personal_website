@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} — {{ config.title }}{% endblock title %}
+
+{% block content %}
+<article>
+  <h1>{{ page.title }}</h1>
+  <small>{{ page.date }}</small>
+  <hr>
+  {{ page.content | safe }}
+</article>
+<p><a href="/blog">← Back to blog</a></p>
+{% endblock content %}

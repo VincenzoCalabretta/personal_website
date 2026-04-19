@@ -1,0 +1,10 @@
+base_url = "https://example.com"
+title = "My Site"
+description = "A site built with Zola and Bazel."
+default_language = "en"
+compile_sass = false
+minify_html = false
+generate_feeds = false
+
+[markdown]
+highlight_code = false

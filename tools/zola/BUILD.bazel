@@ -1,0 +1,18 @@
+# tools/zola/BUILD.bazel
+#
+# Exposes the Zola binary fetched via http_archive in MODULE.bazel.
+# The select() picks the right pre-built binary for the host OS.
+#
+# Referenced by the zola_site rule as //tools/zola (the default).
+
+package(default_visibility = ["//visibility:public"])
+
+# Wrap the raw filegroup from the http_archive in a sh_binary so that
+# Bazel treats it as a proper executable and cfg = "exec" works correctly.
+sh_binary(
+    name = "zola",
+    srcs = select({
+        "@platforms//os:linux": ["@zola_linux_x86//:zola"],
+        "@platforms//os:macos": ["@zola_macos//:zola"],
+    }),
+)
