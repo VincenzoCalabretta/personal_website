@@ -1,0 +1,41 @@
+module(
+    name = "v_website",
+    version = "0.0.0",
+)
+
+# Toolchains 
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+
+bazel_dep(name = "platforms", version = "1.0.0")
+
+## Shell
+bazel_dep(name = "rules_shell", version = "0.6.1")
+
+## Rust
+bazel_dep(name = "rules_rust", version = "0.69.0")
+
+rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+rust.toolchain(
+    edition = "2024",
+    versions = ["1.93.1"],
+)
+use_repo(rust, "rust_toolchains")
+register_toolchains("@rust_toolchains//:all")
+
+### Third party dependencies
+crates = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
+crates.spec(package = "clap", version = "4.5", features = ["derive"])
+crates.spec(package = "regex", version = "1.10")
+
+crates.from_specs()
+use_repo(crates, "crates")
+
+# Project dependencies
+http_archive(
+    name = "zola_linux_x86",
+    url = "https://github.com/getzola/zola/releases/download/v0.22.1/zola-v0.22.1-x86_64-unknown-linux-gnu.tar.gz",
+    sha256 = "0ca09aa40376aaa9ddfb512ff9ad963262ef95edb0d0f2d5ec6961b6f5cf22ef",
+    build_file_content = """exports_files(["zola"])""",
+)

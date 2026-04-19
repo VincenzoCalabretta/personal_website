@@ -1,0 +1,51 @@
+# site/BUILD.bazel
+#
+# Build the Zola site and deploy it to a VPS.
+#
+# Commands:
+#   bazel build //site:site      → builds into bazel-bin/site/site_public/
+#   bazel run   //site:deploy    → builds + rsyncs to your VPS
+
+load("//rules:zola.bzl", "zola_site")
+load("//rules:deploy.bzl", "deploy")
+ 
+zola_site(
+    name = "site",
+    config = "config.toml",
+    srcs = glob(
+        # Required — these must always have files:
+        [
+            "config.toml",
+            "content/**",
+            "templates/**",
+        ],
+        exclude = [
+            "**/.DS_Store",
+            "**/*.swp",
+            "**/.*",
+        ],
+    ) + glob(
+        # Optional — won't fail if the directory is empty or absent:
+        ["static/**"],
+        allow_empty = True,
+        exclude = ["**/.gitkeep"],
+    ) + glob(
+        ["sass/**"],
+        allow_empty = True,
+        exclude = ["**/.gitkeep"],
+    ) + glob(
+        ["themes/**"],
+        allow_empty = True,
+        exclude = ["**/.gitkeep"],
+    ),
+)
+ 
+deploy(
+    name = "deploy",
+    site = ":site",
+    remote_user = "deploy",
+    remote_host = "your-vps.example.com",  # ← change this
+    remote_path = "/var/www/mysite",        # ← change this
+    # ssh_key = "/home/you/.ssh/id_ed25519",  # optional
+)
+ 
