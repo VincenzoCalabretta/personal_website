@@ -5,6 +5,3 @@ default_language = "en"
 compile_sass = false
 minify_html = false
 generate_feeds = false
-
-[markdown]
-highlight_code = false
