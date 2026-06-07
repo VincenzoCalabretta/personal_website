@@ -60,3 +60,6 @@ infra/postgres-data/
 
 # Rust cargo lsp cache
 .cargo_target_cache/
+
+# Claude Code local config
+.claude/
