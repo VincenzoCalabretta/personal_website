@@ -3,21 +3,9 @@
 {% block title %}{{ page.title }} &#8212; {{ config.title }}{% endblock title %}
 
 {% block content %}
-<center>
-  <h1>{{ page.title }}</h1>
-  <font size="2" color="#555555">Posted: <b>{{ page.date }}</b></font>
-</center>
-
-<hr size="4" color="#800000" width="100%">
-
+<h1>{{ page.title }}</h1>
+<p><small>{{ page.date }}</small></p>
+<hr>
 {{ page.content | safe }}
-
-<hr size="2">
-
-<table width="100%" border="0">
-  <tr>
-    <td><a href="/blog">&#8592; Back to Blog</a></td>
-    <td align="right"><a href="/">Home</a></td>
-  </tr>
-</table>
+<p><a href="/blog">&#8592; Back to blog</a></p>
 {% endblock content %}

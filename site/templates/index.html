@@ -3,34 +3,18 @@
 {% block title %}{{ config.title }}{% endblock title %}
 
 {% block content %}
-<center>
-  <h1>&#127760; {{ config.title }} &#127760;</h1>
-  <img src="https://web.archive.org/web/19961221002554im_/http://www.geocities.com/Hollywood/Hills/5484/newflame.gif" alt="fire" width="50" onerror="this.style.display='none'">
-  <br>
-  <font size="4" color="#800000"><i>{{ config.description }}</i></font>
-</center>
+<h1>{{ config.title }}</h1>
+<p>{{ config.description }}</p>
 
-<hr size="5" color="#800000" width="100%">
-
-<h2>&#128196; Latest Posts</h2>
-
+<h2>Latest posts</h2>
 <ul>
   {% for page in section.pages %}
   <li>
-    <a href="{{ page.permalink }}"><b>{{ page.title }}</b></a>
-    &nbsp;<font size="2" color="#555555">&#8212; {{ page.date }}</font>
-    &nbsp;<font color="#ff0000" size="1"><b>[NEW!]</b></font>
+    <a href="{{ page.permalink }}">{{ page.title }}</a>
+    <small>&#8212; {{ page.date }}</small>
   </li>
   {% else %}
-  <li><i>No posts yet. Check back soon!!</i></li>
+  <li><i>No posts yet.</i></li>
   {% endfor %}
 </ul>
-
-<hr size="2">
-
-<center>
-  <font size="2" color="#000080">
-    &#9993; Got feedback? Sign my guestbook!
-  </font>
-</center>
 {% endblock content %}

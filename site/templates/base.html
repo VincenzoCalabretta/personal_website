@@ -1,109 +1,14 @@
 <html>
 <head>
   <title>{% block title %}{{ config.title }}{% endblock title %}</title>
-  <style>
-    body {
-      background-color: #c0c0c0;
-      font-family: "Comic Sans MS", "Times New Roman", serif;
-      color: #000000;
-      margin: 8px;
-    }
-    a:link    { color: #0000ff; }
-    a:visited { color: #800080; }
-    a:active  { color: #ff0000; }
-    h1 { font-size: 24pt; color: #800000; }
-    h2 { font-size: 18pt; color: #000080; }
-    .navbar {
-      background-color: #000080;
-      padding: 4px;
-    }
-    .navbar a {
-      color: #ffff00;
-      font-weight: bold;
-      margin-right: 12px;
-      text-decoration: none;
-      font-family: "Comic Sans MS", Arial, sans-serif;
-    }
-    .navbar a:hover { color: #ffffff; }
-    .main-table {
-      background-color: #ffffff;
-      border: 3px ridge #808080;
-      padding: 10px;
-      width: 780px;
-    }
-    .footer-text {
-      font-size: 8pt;
-      color: #444444;
-      font-family: "Times New Roman", serif;
-    }
-    .counter {
-      font-family: "Courier New", monospace;
-      background-color: #000000;
-      color: #00ff00;
-      padding: 2px 6px;
-      font-size: 10pt;
-      letter-spacing: 2px;
-    }
-    blink { text-decoration: blink; }
-  </style>
 </head>
 <body>
-
-<center>
-
-<marquee behavior="scroll" direction="left" scrollamount="3" bgcolor="#ffff00">
-  &nbsp;&nbsp;&nbsp;
-  *** WELCOME TO {{ config.title | upper }} ***
-  &nbsp;&nbsp;&nbsp;&mdash;&nbsp;&nbsp;&nbsp;
-  Best viewed in Netscape Navigator 2.0 at 800x600
-  &nbsp;&nbsp;&nbsp;&mdash;&nbsp;&nbsp;&nbsp;
-  *** THIS SITE IS UNDER CONSTRUCTION ***
-  &nbsp;&nbsp;&nbsp;
-</marquee>
-
-<br>
-
-<table width="780" border="0" cellpadding="0" cellspacing="0">
-  <tr>
-    <td class="navbar">
-      &nbsp;
-      <a href="/">[ Home ]</a>
-      <a href="/blog">[ Blog ]</a>
-      &nbsp;
-    </td>
-  </tr>
-</table>
-
-<table class="main-table" cellpadding="10" cellspacing="0">
-  <tr>
-    <td>
-
-      {% block content %}{% endblock content %}
-
-    </td>
-  </tr>
-</table>
-
-<br>
-
-<hr width="780" size="3">
-
-<table width="780" border="0" cellpadding="4">
-  <tr>
-    <td align="left" class="footer-text">
-      Visitors: <span class="counter">001337</span>
-    </td>
-    <td align="center" class="footer-text">
-      <blink>&#9733; This page is ALWAYS under construction &#9733;</blink>
-    </td>
-    <td align="right" class="footer-text">
-      &copy; 1995 {{ config.title }}<br>
-      <small>Best viewed 800&times;600</small>
-    </td>
-  </tr>
-</table>
-
-</center>
-
+  <p>
+    <a href="/">Home</a> |
+    <a href="/blog">Blog</a>
+  </p>
+  <hr>
+  {% block content %}{% endblock content %}
+  <hr>
 </body>
 </html>
