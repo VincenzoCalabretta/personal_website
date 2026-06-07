@@ -1,17 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}Blog — {{ config.title }}{% endblock title %}
+{% block title %}Blog &#8212; {{ config.title }}{% endblock title %}
 
 {% block content %}
-<h1>Blog</h1>
+<center>
+  <h1>&#128196; The Blog Zone &#128196;</h1>
+</center>
+
+<hr size="4" color="#000080">
+
 <ul>
   {% for page in section.pages %}
   <li>
-    <a href="{{ page.permalink }}">{{ page.title }}</a>
-    <small>— {{ page.date }}</small>
+    <a href="{{ page.permalink }}"><b>{{ page.title }}</b></a>
+    &nbsp;<font size="2" color="#555555">&#8212; {{ page.date }}</font>
   </li>
   {% else %}
-  <li>No posts yet.</li>
+  <li><i>No posts yet.</i></li>
   {% endfor %}
 </ul>
+
+<hr size="2">
+<p><a href="/">&#8592; Back to Home</a></p>
 {% endblock content %}
