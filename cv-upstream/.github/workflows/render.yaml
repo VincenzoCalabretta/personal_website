@@ -1,0 +1,39 @@
+name: "Render Resume"
+on:
+  push:
+    branches:
+      - master
+jobs:
+  render:
+    runs-on: docker
+    env:
+      GIT_SSL_NO_VERIFY: "true"
+      NODE_TLS_REJECT_UNAUTHORIZED: "0"
+    container:
+      image: ubuntu:latest
+      volumes:
+        - /var/run/docker.sock:/var/run/resume_template.sock
+    steps:
+      - name: Install Dependencies
+        run: |
+          apt-get update
+          apt-get install -y sudo curl xz-utils nodejs git docker.io ca-certificates
+
+      - name: Checkout
+        uses: https://github.com/actions/checkout@v4
+
+      - name: Install Nix
+        uses: https://github.com/cachix/install-nix-action@v30
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            trusted-users = root runner
+      
+      - run: nix develop --command just pdf
+      
+      # Forgejo natively supports the v3 API without issues.
+      - uses: actions/upload-artifact@v3
+        with:
+          name: resume-pdf
+          path: "*.pdf"
