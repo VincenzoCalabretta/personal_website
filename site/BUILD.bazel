@@ -16,6 +16,7 @@ zola_site(
         # Required — these must always have files:
         [
             "config.toml",
+            "resume.json",
             "content/**",
             "templates/**",
         ],

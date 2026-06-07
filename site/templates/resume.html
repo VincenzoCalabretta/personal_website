@@ -1,0 +1,226 @@
+{% set resume = load_data(path=page.extra.resume_data) %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ resume.basics.name }} — CV</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../resume.css" />
+</head>
+<body>
+<main>
+
+    <img class="cv-ground-track" src="../images/ground_track.svg" alt="Ground track" aria-hidden="true" />
+
+    <header class="cv-header">
+	<div class="cv-header__top">
+            <h1>{{ resume.basics.name }}</h1>
+            {% if resume.basics.label %}
+            <span class="cv-header__label">{{ resume.basics.label }}</span>
+            {% endif %}
+        </div>
+	<ul class="cv-header__contact">
+            {% if resume.basics.email %}
+            <li class="contact-item">
+                <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <code>{{ resume.basics.email }}</code>
+            </li>
+            {% endif %}
+            
+            {% if resume.basics.phone %}
+            <li class="contact-item">
+                <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                <code>{{ resume.basics.phone }}</code>
+            </li>
+            {% endif %}
+            
+            {% if resume.basics.url %}
+            <li class="contact-item">
+                <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                <code>{{ resume.basics.url }}</code>
+            </li>
+            {% endif %}
+            
+            {% if resume.basics.profiles %}
+            {% for p in resume.basics.profiles %}
+            <li class="contact-item">
+                {% set network = p.network | lower %}
+                {% if network == "linkedin" %}
+                <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                {% elif network == "github" %}
+                <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                {% else %}
+                <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                {% endif %}
+                <code>{% if p.url %}{{ p.url }}{% else %}{{ p.username }}{% endif %}</code>
+            </li>
+            {% endfor %}
+            {% endif %}
+        </ul>
+    </header>
+
+    {% if resume.basics.summary %}
+    <section class="cv-section">
+        <h2 class="cv-section__title">Summary</h2>
+        <div class="cv-section__body cv-summary">
+            <div class="two-col">
+                {{ resume.basics.summary | markdown | safe }}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if resume.work %}
+    <section class="cv-section">
+        <h2 class="cv-section__title">Work Experience</h2>
+        <div class="cv-section__body">
+            {% for work in resume.work %}
+            <div class="cv-entry">
+                <div class="cv-entry__header">
+                    <div class="cv-entry__meta">
+                        <h3 class="cv-entry__title">{{ work.position }}</h3>
+			<span class="cv-entry__org">
+			    {% if work.url %}
+				<a href="{{ work.url }}" target="_blank" rel="noopener noreferrer">{{ work.name }}</a>
+			    {% else %}
+				{{ work.name }}
+			    {% endif %}
+			    {% if work.location %} · {{ work.location }}{% endif %}
+			</span>
+                    </div>
+                    <time class="cv-entry__date">
+                        {{ work.startDate | date(format="%b %Y") }}–{% if work.endDate %}{{ work.endDate | date(format="%b %Y") }}{% else %}present{% endif %}
+                    </time>
+                </div>
+                {% if work.summary %}<p class="cv-entry__summary">{{ work.summary }}</p>{% endif %}
+                {% if work.highlights %}
+                <ul class="cv-entry__highlights">
+                    {% for h in work.highlights %}<li>{{ h | markdown(inline=true) | safe }}</li>{% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if resume.publications %}
+    <section class="cv-section">
+        <h2 class="cv-section__title">Research</h2>
+        <div class="cv-section__body">
+            <ul class="cv-prose-list">
+                {% for pub in resume.publications %}
+                <li>
+                    {% if pub.releaseDate %}<time class="cv-pub-year">{{ pub.releaseDate | date(format="%Y") }}</time>{% endif %}
+                    {% if pub.publisher %}<span class="cv-pub-venue">{{ pub.publisher }}</span>{% endif %}
+                    {% if pub.url %}<a href="{{ pub.url }}">{% endif %}<em>{{ pub.name }}</em>{% if pub.url %}</a>{% endif %}
+                    {% if pub.summary %} — {{ pub.summary }}{% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+    {% endif %}
+
+    {#
+        Skills use a "level" field to drive layout:
+          level = "category"  -> named category block with two-col layout inside
+          level = "group"     -> bold sub-heading with inline keyword list
+          level = "item"      -> regular entry with sub-bullet keywords
+          (omitted/other)     -> same as "item"
+
+        Example resume.json:
+          { "name": "Embedded Systems Engineering", "level": "category" }
+          { "name": "Programming Languages", "level": "group",
+            "keywords": ["C (7+ yrs)", "C++ (2+ yrs)", "Python"] }
+          { "name": "Linux", "level": "item",
+            "keywords": ["drivers", "kernel patching", "device tree"] }
+    #}
+    {% if resume.skills %}
+    <section class="cv-section">
+        <h2 class="cv-section__title">Skills</h2>
+        <div class="cv-section__body">
+            <div class="skills-two-col">
+                {% for skill in resume.skills %}
+                <div class="skills-entry">
+                    <span class="skill-name">{{ skill.name }}:</span>
+                    {% if skill.keywords %}
+                    <span class="skill-kw-list">
+                        {{ skill.keywords | join(sep=", ") }}
+                    </span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if resume.education %}
+    <section class="cv-section">
+        <h2 class="cv-section__title">Education</h2>
+        <div class="cv-section__body">
+            {% for edu in resume.education %}
+            <div class="cv-entry">
+                <div class="cv-entry__header">
+                    <div class="cv-entry__meta">
+                        <h3 class="cv-entry__title">{{ edu.studyType }}, {{ edu.area }}</h3>
+                        <span class="cv-entry__org">{{ edu.institution }}{% if edu.location %} · {{ edu.location }}{% endif %}</span>
+                    </div>
+                    <time class="cv-entry__date">
+                        {{ edu.startDate | date(format="%Y") }}–{% if edu.endDate %}{{ edu.endDate | date(format="%Y") }}{% else %}present{% endif %}
+                    </time>
+                </div>
+                {% if edu.score %}<p class="cv-entry__summary">GPA: {{ edu.score }}</p>{% endif %}
+                {% if edu.summary %}<p class="cv-entry__summary">{{ edu.summary }}</p>{% endif %}
+                {% if edu.courses %}
+                <ul class="cv-entry__highlights cv-entry__highlights--compact">
+                    {% for c in edu.courses %}<li>{{ c }}</li>{% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if resume.projects %}
+    <section class="cv-section">
+        <h2 class="cv-section__title">Open Source &amp; Projects</h2>
+        <div class="cv-section__body">
+            <ul class="cv-prose-list">
+                {% for project in resume.projects %}
+                <li>
+                    <em class="project-name">{{ project.name }}</em>
+                    {% if project.url %}<code class="project-url">{{ project.url }}</code>{% endif %}
+                    {% if project.description %}— {{ project.description | markdown(inline=true) | safe }}{% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if resume.awards %}
+    <section class="cv-section">
+        <h2 class="cv-section__title">Service &amp; Honors</h2>
+        <div class="cv-section__body">
+            <ul class="cv-prose-list">
+                {% for award in resume.awards %}
+                <li>
+                    {{ award.title | markdown(inline=true) | safe }}
+                    {% if award.awarder %}<span class="cv-aside">{{ award.awarder }}</span>{% endif %}
+                    {% if award.date %}<time class="cv-aside cv-aside--date">{{ award.date | date(format="%Y") }}</time>{% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+    {% endif %}
+
+</main>
+</body>
+</html>
