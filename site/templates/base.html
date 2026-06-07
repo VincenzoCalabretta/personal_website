@@ -4,26 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}{{ config.title }}{% endblock title %}</title>
-  <style>
-    body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
-    nav a { margin-right: 1rem; }
-  </style>
+  <link rel="stylesheet" href="/site.css">
+  {% block extra_head %}{% endblock extra_head %}
 </head>
 <body>
-  <header>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/blog">Blog</a>
-      <a href="/cv">CV</a>
-    </nav>
-    <hr>
-  </header>
-  <main>
-    {% block content %}{% endblock content %}
-  </main>
-  <footer>
-    <hr>
-    <small></small>
-  </footer>
+  <div class="site-wrap">
+    <header>
+      <nav class="site-nav">
+        <a href="/" class="site-nav__home">{{ config.title }}</a>
+        <a href="/blog">Blog</a>
+        <a href="/cv">CV</a>
+      </nav>
+    </header>
+    <main>
+      {% block content %}{% endblock content %}
+    </main>
+    <footer class="site-footer"></footer>
+  </div>
 </body>
 </html>

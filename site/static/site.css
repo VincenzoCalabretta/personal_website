@@ -1,0 +1,167 @@
+/* site.css — shared style, inherits typographic identity from resume.css */
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+    --black:      #000000;
+    --ink:        #111111;
+    --mid:        #444444;
+    --light:      #777777;
+    --rule:       #b0b0b0;
+    --bg:         #ffffff;
+
+    --font-serif:   'EB Garamond', 'Palatino Linotype', Georgia, serif;
+    --font-display: 'Libre Baskerville', 'Times New Roman', serif;
+    --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+
+    --sz-base: 10.5pt;
+    --lead:    1.5;
+
+    --max-w:   68ch;
+    --pad-x:   1.5rem;
+    --pad-y:   2rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+    font-size: var(--sz-base);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+body {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    line-height: var(--lead);
+    color: var(--ink);
+    background: var(--bg);
+}
+
+/* ── LAYOUT ──────────────────────────────────────────────────── */
+.site-wrap {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: var(--pad-y) var(--pad-x);
+}
+
+/* ── NAV ─────────────────────────────────────────────────────── */
+.site-nav {
+    display: flex;
+    gap: 1.4rem;
+    align-items: baseline;
+    padding-bottom: 0.4rem;
+    border-bottom: 1.5px solid var(--black);
+    margin-bottom: 2rem;
+}
+
+.site-nav a {
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--black);
+    text-decoration: none;
+}
+
+.site-nav a:hover { color: var(--mid); }
+
+.site-nav__home {
+    font-size: 0.85rem !important;
+    letter-spacing: 0.05em !important;
+    margin-right: auto;
+}
+
+/* ── FOOTER ──────────────────────────────────────────────────── */
+.site-footer {
+    margin-top: 3rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--rule);
+}
+
+/* ── TYPOGRAPHY ──────────────────────────────────────────────── */
+h1, h2, h3 {
+    font-family: var(--font-display);
+    color: var(--black);
+    line-height: 1.2;
+}
+
+h1 { font-size: 1.7rem; margin-bottom: 0.4rem; }
+h2 {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    padding-bottom: 0.15rem;
+    border-bottom: 1px solid var(--black);
+    margin: 1.6rem 0 0.7rem;
+}
+
+p  { margin-bottom: 0.6rem; }
+a  { color: var(--black); text-decoration: underline; text-underline-offset: 2px; }
+code { font-family: var(--font-mono); font-size: 0.83em; }
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+/* ── POST LIST ───────────────────────────────────────────────── */
+.post-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.post-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+}
+
+.post-list a {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.post-list time {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--light);
+    white-space: nowrap;
+}
+
+/* ── ARTICLE ─────────────────────────────────────────────────── */
+.post-header { margin-bottom: 1.2rem; }
+
+.post-header h1 { margin-bottom: 0.15rem; }
+
+.post-header time {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--light);
+}
+
+.post-body { border-top: 1px solid var(--rule); padding-top: 1rem; }
+
+.post-body p  { margin-bottom: 0.7rem; }
+.post-body li { padding-left: 0.85rem; position: relative; margin-bottom: 0.2rem; }
+.post-body ul li::before { content: '›'; position: absolute; left: 0.05rem; color: var(--light); }
+.post-body ol { counter-reset: li; }
+.post-body ol li::before { content: counter(li) '.'; counter-increment: li; position: absolute; left: 0; color: var(--mid); }
+.post-body h2, .post-body h3 { margin-top: 1.2rem; }
+
+.back-link {
+    display: inline-block;
+    margin-top: 1.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--mid);
+    text-decoration: none;
+}
+.back-link:hover { color: var(--black); }
+
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media (max-width: 600px) {
+    :root { --pad-x: 1rem; --pad-y: 1.2rem; }
+    .post-list li { flex-direction: column; gap: 0.1rem; }
+}

@@ -4,14 +4,15 @@
 
 {% block content %}
 <h1>Blog</h1>
-<ul>
+
+<ul class="post-list">
   {% for page in section.pages %}
   <li>
     <a href="{{ page.permalink }}">{{ page.title }}</a>
-    <small>— {{ page.date }}</small>
+    <time>{{ page.date }}</time>
   </li>
   {% else %}
-  <li>No posts yet.</li>
+  <li><span>No posts yet.</span></li>
   {% endfor %}
 </ul>
 {% endblock content %}
