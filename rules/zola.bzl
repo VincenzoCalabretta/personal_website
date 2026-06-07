@@ -11,45 +11,81 @@ Usage:
             "content/**",
             "templates/**",
             "static/**",
-            "sass/**",
-            "themes/**",
         ]),
+        overlays = {
+            "//some:label": "relative/dest/path",
+            "//dir:label": "relative/dest/dir/",  # trailing slash → copy into dir
+        },
     )
 
 Then:
     bazel build //site:site
-    # output at bazel-bin/site/public/
+    # output at bazel-bin/site/site_public/
 """
 
 def _zola_site_impl(ctx):
     zola = ctx.executable.zola
     output_dir = ctx.actions.declare_directory(ctx.attr.name + "_public")
+    site_root = ctx.file.config.dirname  # e.g. "site"
 
-    # The root is the directory containing config.toml
-    site_root = ctx.file.config.dirname
+    # Build copy commands for overlay files (sourced outside the site tree)
+    overlay_inputs = []
+    overlay_cmds = []
+    for target, dest_path in ctx.attr.overlays.items():
+        for f in target.files.to_list():
+            overlay_inputs.append(f)
+            if dest_path.endswith("/"):
+                cmd = (
+                    'mkdir -p "$STAGING/{root}/{dest}" && ' +
+                    'cp "{src}" "$STAGING/{root}/{dest}{name}"'
+                ).format(
+                    root = site_root,
+                    dest = dest_path,
+                    src = f.path,
+                    name = f.basename,
+                )
+            else:
+                cmd = (
+                    'mkdir -p "$(dirname "$STAGING/{root}/{dest}")" && ' +
+                    'cp "{src}" "$STAGING/{root}/{dest}"'
+                ).format(
+                    root = site_root,
+                    dest = dest_path,
+                    src = f.path,
+                )
+            overlay_cmds.append(cmd)
+
+    srcs_joined = " ".join(['"%s"' % f.path for f in ctx.files.srcs])
 
     ctx.actions.run_shell(
-        command = """
+        command = """\
 set -euo pipefail
 
-ZOLA="{zola}"
-ROOT="{root}"
-OUT="{out}"
+STAGING=$(mktemp -d)
+trap 'rm -rf "$STAGING"' EXIT
 
-# Zola requires the output dir to not exist or be empty when using --force.
-# Bazel pre-creates declared directories, so we pass --force.
-"$ZOLA" --root "$ROOT" build \\
-    --output-dir "$OUT" \\
+# Copy all site srcs into staging, preserving structure relative to site root.
+for f in {srcs}; do
+    rel="${{f#{root}/}}"
+    dst="$STAGING/{root}/$rel"
+    mkdir -p "$(dirname "$dst")"
+    cp "$f" "$dst"
+done
+
+# Place overlay files at their declared site-relative paths (overrides srcs).
+{overlays}
+
+"{zola}" --root "$STAGING/{root}" build \\
+    --output-dir "{out}" \\
     --force
 """.format(
-            zola = zola.path,
+            srcs = srcs_joined,
             root = site_root,
+            overlays = "\n".join(overlay_cmds) if overlay_cmds else "# no overlays",
+            zola = zola.path,
             out = output_dir.path,
         ),
-        inputs = depset(
-            ctx.files.srcs,
-            transitive = [],
-        ),
+        inputs = depset(ctx.files.srcs + overlay_inputs),
         tools = [zola],
         outputs = [output_dir],
         mnemonic = "ZolaBuild",
@@ -74,6 +110,15 @@ zola_site = rule(
             allow_single_file = ["config.toml"],
             mandatory = True,
             doc = "The config.toml at the root of the Zola site.",
+        ),
+        "overlays": attr.label_keyed_string_dict(
+            allow_files = True,
+            default = {},
+            doc = (
+                "Extra files to inject at specific site-relative paths, sourced " +
+                "from labels outside the site tree. A dest ending with '/' copies " +
+                "each file into that directory; otherwise it is an exact dest path."
+            ),
         ),
         "zola": attr.label(
             default = "//tools/zola",

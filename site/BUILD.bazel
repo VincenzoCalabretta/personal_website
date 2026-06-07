@@ -8,28 +8,31 @@
 
 load("//rules:zola.bzl", "zola_site")
 load("//rules:deploy.bzl", "deploy")
- 
+
 zola_site(
     name = "site",
     config = "config.toml",
     srcs = glob(
-        # Required — these must always have files:
         [
             "config.toml",
-            "resume.json",
             "content/**",
             "templates/**",
         ],
         exclude = [
+            "templates/resume.html",  # sourced from //cv-upstream via overlays
             "**/.DS_Store",
             "**/*.swp",
             "**/.*",
         ],
     ) + glob(
-        # Optional — won't fail if the directory is empty or absent:
         ["static/**"],
         allow_empty = True,
-        exclude = ["**/.gitkeep"],
+        exclude = [
+            "static/resume.css",    # sourced from //cv-upstream via overlays
+            "static/fonts/**",      # sourced from //cv-upstream via overlays
+            "static/images/**",     # sourced from //cv-upstream via overlays
+            "**/.gitkeep",
+        ],
     ) + glob(
         ["sass/**"],
         allow_empty = True,
@@ -39,8 +42,15 @@ zola_site(
         allow_empty = True,
         exclude = ["**/.gitkeep"],
     ),
+    overlays = {
+        "//cv-upstream:resume_json":     "resume.json",
+        "//cv-upstream:resume_template": "templates/resume.html",
+        "//cv-upstream:resume_css":      "static/resume.css",
+        "//cv-upstream:fonts":           "static/fonts/",
+        "//cv-upstream:images":          "static/images/",
+    },
 )
- 
+
 deploy(
     name = "deploy",
     site = ":site",
@@ -49,4 +59,3 @@ deploy(
     remote_path = "/var/www/mysite",        # ← change this
     # ssh_key = "/home/you/.ssh/id_ed25519",  # optional
 )
- 

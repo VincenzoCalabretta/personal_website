@@ -63,3 +63,6 @@ infra/postgres-data/
 
 # Claude Code local config
 .claude/
+
+# Zola dev output
+site/public/

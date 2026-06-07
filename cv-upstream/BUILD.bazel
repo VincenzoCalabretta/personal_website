@@ -1,0 +1,5 @@
+filegroup(name = "resume_json",    srcs = ["resume.json"])
+filegroup(name = "resume_template", srcs = ["templates/resume.html"])
+filegroup(name = "resume_css",     srcs = ["static/resume.css"])
+filegroup(name = "fonts",          srcs = glob(["static/fonts/**"]))
+filegroup(name = "images",         srcs = glob(["static/images/**"]))
